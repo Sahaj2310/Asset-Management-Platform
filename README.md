@@ -107,10 +107,28 @@ Sahaj Modi - [@Sahaj2310](https://github.com/Sahaj2310)
 
 Project Link: [https://github.com/Sahaj2310/Asset-Management-Platform](https://github.com/Sahaj2310/Asset-Management-Platform)
 
-# Data Setup for Location APIs
+## Recent Changes
+
+### Site-Company Relationship
+- Each Site is now linked to a Company via a `CompanyId` (Guid) foreign key.
+- The API returns the company name with each site (see `SiteReadDto`).
+
+### Use of Guid Keys
+- All primary keys for Sites (and Companies) are now `Guid` for better uniqueness and security.
+
+### DTOs and Repository Pattern
+- All API endpoints use DTOs for input/output.
+- Data access is handled via repositories for clean separation of concerns.
+
+### Large Data Files and .gitignore
+- `wwwroot/data/` and `wwwroot/uploads/` are excluded from version control via `.gitignore`.
+- **Do not commit large or user-uploaded files to GitHub.**
+- To set up location data, follow the instructions below.
+
+## Data Setup for Location APIs
 
 1. Download the following files from the [countries-states-cities-database](https://github.com/dr5hn/countries-states-cities-database/tree/master/json):
    - countries.json
    - states.json
    - cities.json
-2. Place these files in the `wwwroot/data/` directory of this project. 
+2. Place these files in the `wwwroot/data/` directory of this project. (This folder is ignored by Git.) 
