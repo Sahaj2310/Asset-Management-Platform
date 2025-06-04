@@ -32,7 +32,6 @@ namespace AssetWeb.MappingProfiles
                 .ForMember(dest => dest.Currency, opt => opt.MapFrom(src => src.Currency))
                 .ForMember(dest => dest.LogoPath, opt => opt.MapFrom(src => src.LogoPath));
 
-            // Profile mappings
             CreateMap<User, UserProfileResponse>();
         }
     }

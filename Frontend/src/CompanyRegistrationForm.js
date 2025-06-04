@@ -15,6 +15,7 @@ function CompanyRegistrationForm({ onRegistrationSuccess }) {
     logo: null, // For file input
   });
 
+  const [logoPreview, setLogoPreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -28,10 +29,20 @@ function CompanyRegistrationForm({ onRegistrationSuccess }) {
   };
 
   const handleFileChange = (e) => {
-    setFormData({
-      ...formData,
-      logo: e.target.files[0],
-    });
+    const file = e.target.files[0];
+    if (file) {
+      setFormData({
+        ...formData,
+        logo: file,
+      });
+      
+      // Create a preview URL for the selected image
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setLogoPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -40,8 +51,7 @@ function CompanyRegistrationForm({ onRegistrationSuccess }) {
     setSuccess(false);
     setLoading(true);
 
-    // In a real app, retrieve the token from your auth context or storage
-    const token = localStorage.getItem('jwtToken'); // Example: get from localStorage
+    const token = localStorage.getItem('jwtToken');
 
     if (!token) {
       setError('Authentication token not found. Please log in again.');
@@ -49,35 +59,28 @@ function CompanyRegistrationForm({ onRegistrationSuccess }) {
       return;
     }
 
-    // Prepare data for the backend
-    // Note: The backend currently expects string fields for address, etc.
-    // It also expects FinancialYearMonth and Day as integers.
-    // LogoPath is currently a string in the backend model, this form sends the file.
-    // You might need to adjust backend or frontend for proper file handling.
-    const dataToSubmit = {
-      companyName: formData.companyName,
-      country: formData.country,
-      state: formData.state,
-      city: formData.city,
-      zipCode: formData.zipCode,
-      address: formData.address,
-      financialYearMonth: parseInt(formData.financialYearMonth, 10),
-      financialYearDay: parseInt(formData.financialYearDay, 10),
-      currency: formData.currency,
-      // For logo, you would typically use FormData and send a 'multipart/form-data' request
-      // For simplicity here, we are not sending the file data in the JSON body.
-      // You'll need to implement proper file upload logic if needed.
-      // LogoPath: formData.logo ? 'path/to/uploaded/logo.jpg' : null, // Placeholder or remove if not sending path
-    };
+    // Create FormData to handle file upload
+    const formDataToSubmit = new FormData();
+    formDataToSubmit.append('companyName', formData.companyName);
+    formDataToSubmit.append('country', formData.country);
+    formDataToSubmit.append('state', formData.state);
+    formDataToSubmit.append('city', formData.city);
+    formDataToSubmit.append('zipCode', formData.zipCode);
+    formDataToSubmit.append('address', formData.address);
+    formDataToSubmit.append('financialYearMonth', formData.financialYearMonth);
+    formDataToSubmit.append('financialYearDay', formData.financialYearDay);
+    formDataToSubmit.append('currency', formData.currency);
+    if (formData.logo) {
+      formDataToSubmit.append('logo', formData.logo);
+    }
 
     try {
-      const response = await fetch('/api/Company/register', { // Replace with your actual backend URL
+      const response = await fetch('/api/Company/register', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify(dataToSubmit),
+        body: formDataToSubmit,
       });
 
       if (!response.ok) {
@@ -87,7 +90,6 @@ function CompanyRegistrationForm({ onRegistrationSuccess }) {
 
       const result = await response.json();
       setSuccess(true);
-      // Call the success handler passed from the parent component
       if (onRegistrationSuccess) {
         onRegistrationSuccess(result);
       }
@@ -134,13 +136,35 @@ function CompanyRegistrationForm({ onRegistrationSuccess }) {
       <form onSubmit={handleSubmit}>
         {/* Logo Upload Section */}
         <div className="form-group logo-upload">
-            <label>Logo</label>
-             <div className="logo-placeholder">
-                 {/* Placeholder for image preview or upload icon */}
-                 <input type="file" accept=".png,.jpg,.jpeg" onChange={handleFileChange} />
-                 <p>Allowed file types: png, jpg, jpeg.</p>
-             </div>
-            {/* <button type="button">Update</button> */} {/* Example button from image */}
+            <label>Company Logo</label>
+            <div className="logo-upload-container">
+                <div className="logo-preview" style={{ backgroundImage: logoPreview ? `url(${logoPreview})` : 'none' }}>
+                    {!logoPreview && (
+                        <div className="logo-placeholder">
+                            <span>Click to upload logo</span>
+                            <span className="logo-hint">Allowed: PNG, JPG, JPEG</span>
+                        </div>
+                    )}
+                    <input 
+                        type="file" 
+                        accept=".png,.jpg,.jpeg" 
+                        onChange={handleFileChange}
+                        className="logo-input"
+                    />
+                </div>
+                {logoPreview && (
+                    <button 
+                        type="button" 
+                        className="remove-logo"
+                        onClick={() => {
+                            setLogoPreview(null);
+                            setFormData(prev => ({ ...prev, logo: null }));
+                        }}
+                    >
+                        Remove Logo
+                    </button>
+                )}
+            </div>
         </div>
 
         <h3>Details</h3>

@@ -105,4 +105,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 Sahaj Modi - [@Sahaj2310](https://github.com/Sahaj2310)
 
-Project Link: [https://github.com/Sahaj2310/Asset-Management-Platform](https://github.com/Sahaj2310/Asset-Management-Platform) 
+Project Link: [https://github.com/Sahaj2310/Asset-Management-Platform](https://github.com/Sahaj2310/Asset-Management-Platform)
+
+# Data Setup for Location APIs
+
+1. Download the following files from the [countries-states-cities-database](https://github.com/dr5hn/countries-states-cities-database/tree/master/json):
+   - countries.json
+   - states.json
+   - cities.json
+2. Place these files in the `wwwroot/data/` directory of this project. 

@@ -73,11 +73,9 @@ namespace AssetWeb.Controllers
                     return NotFound(new { message = "User not found" });
                 }
 
-                // Update user properties
                 user.FirstName = request.FirstName;
                 user.LastName = request.LastName;
                 
-                // Only update email if it's different and not already taken
                 if (request.Email != user.Email)
                 {
                     if (await _authService.UserExists(request.Email))
@@ -85,7 +83,7 @@ namespace AssetWeb.Controllers
                         return BadRequest(new { message = "Email is already taken" });
                     }
                     user.Email = request.Email;
-                    user.EmailConfirmed = false; // Require email confirmation for new email
+                    user.EmailConfirmed = false; 
                 }
 
                 var success = await _authService.UpdateUserAsync(user);

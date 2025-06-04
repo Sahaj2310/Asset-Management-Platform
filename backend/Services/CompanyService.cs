@@ -63,4 +63,4 @@ namespace AssetWeb.Services
             return await _companyRepository.HasCompanyAsync(userId);
         }
     }
-} 
+}

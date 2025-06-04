@@ -43,7 +43,6 @@ namespace AssetWeb.Services
 
             var user = await _authRepository.Register(request);
             
-            // Generate email confirmation token and send email
             var confirmationToken = await _authRepository.GenerateEmailConfirmationTokenAsync(user.Id);
             var emailSent = await _emailService.SendEmailConfirmationAsync(user.Email, user.Id, confirmationToken);
             
