@@ -46,7 +46,7 @@ cd Asset-Management-Platform
 2. Configuration Setup
 ```bash
 # Copy the template configuration file
-cp backend/appsettings.template.json backend/appsettings.json
+cp appsettings.template.json backend/appsettings.json
 
 # Edit appsettings.json with your settings:
 # - Update database connection string
