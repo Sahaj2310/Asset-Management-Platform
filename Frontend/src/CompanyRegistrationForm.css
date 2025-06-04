@@ -1,0 +1,142 @@
+/* Frontend/src/CompanyRegistrationForm.css */
+.company-registration-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.company-registration-container h2,
+.company-registration-container h3 {
+  color: #333;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-row .form-group {
+    flex: 1;
+    margin-bottom: 0; /* Remove bottom margin from inner groups */
+}
+
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #555;
+}
+
+.form-group input[type="text"],
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box; /* Include padding in width */
+}
+
+.form-group textarea {
+    resize: vertical; /* Allow vertical resizing */
+}
+
+.financial-year-selects {
+    display: flex;
+    gap: 10px;
+}
+
+.financial-year-selects select {
+    flex: 1;
+}
+
+
+.logo-upload {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+}
+
+.logo-placeholder {
+    width: 100px;
+    height: 100px;
+    background-color: #f0f0f0;
+    border: 1px dashed #ccc;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 0.8em;
+    color: #777;
+    position: relative; /* Needed for absolute positioning of input */
+     cursor: pointer;
+}
+
+/* Hide the default file input button but keep it accessible */
+.logo-placeholder input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+
+.form-actions {
+  margin-top: 30px;
+  text-align: right;
+}
+
+.form-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  margin-left: 10px;
+}
+
+.form-actions button[type="submit"] {
+  background-color: #007bff; /* Example primary color */
+  color: white;
+}
+
+.form-actions button[type="submit"]:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.btn-cancel {
+    background-color: #6c757d; /* Example secondary color */
+    color: white;
+}
+
+.error-message {
+    color: #dc3545; /* Example danger color */
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.success-message {
+    color: #28a745; /* Example success color */
+    margin-bottom: 15px;
+    text-align: left;
+} 
