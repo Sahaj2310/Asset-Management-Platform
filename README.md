@@ -1,6 +1,6 @@
 # Asset Management Platform
 
-A comprehensive asset management solution built with .NET Core and modern web technologies.
+A modern web-based solution for managing company assets, users, and inventory with secure authentication and real-time tracking.
 
 ## Features
 
@@ -43,7 +43,18 @@ git clone https://github.com/Sahaj2310/Asset-Management-Platform.git
 cd Asset-Management-Platform
 ```
 
-2. Backend Setup
+2. Configuration Setup
+```bash
+# Copy the template configuration file
+cp backend/appsettings.template.json backend/appsettings.json
+
+# Edit appsettings.json with your settings:
+# - Update database connection string
+# - Set JWT secret key and URLs
+# - Configure email settings
+```
+
+3. Backend Setup
 ```bash
 cd backend
 dotnet restore
@@ -51,7 +62,7 @@ dotnet build
 dotnet run
 ```
 
-3. Frontend Setup (Coming Soon)
+4. Frontend Setup (Coming Soon)
 ```bash
 cd frontend
 npm install

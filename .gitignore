@@ -83,4 +83,9 @@ yarn-error.log*
 # Backup files
 *.bak
 *.tmp
-*.temp 
+*.temp
+
+# Appsettings.json
+appsettings.json
+appsettings.*.json
+!appsettings.template.json 
