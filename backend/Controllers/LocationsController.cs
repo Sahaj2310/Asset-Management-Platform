@@ -1,5 +1,6 @@
 using AssetWeb.Services;
 using Microsoft.AspNetCore.Mvc;
+using AssetWeb.DTOs;
 
 namespace AssetWeb.Controllers
 {
@@ -17,19 +18,25 @@ namespace AssetWeb.Controllers
         [HttpGet("countries")]
         public IActionResult GetCountries()
         {
-            return Ok(_locationService.GetCountries());
+            var countries = _locationService.GetCountries()
+                .Select(c => new LocationDto { Id = c.Id, Name = c.Name });
+            return Ok(countries);
         }
 
         [HttpGet("states")]
         public IActionResult GetStates(int countryId)
         {
-            return Ok(_locationService.GetStatesByCountry(countryId));
+            var states = _locationService.GetStatesByCountry(countryId)
+                .Select(s => new LocationDto { Id = s.Id, Name = s.Name });
+            return Ok(states);
         }
 
         [HttpGet("cities")]
         public IActionResult GetCities(int stateId)
         {
-            return Ok(_locationService.GetCitiesByState(stateId));
+            var cities = _locationService.GetCitiesByState(stateId)
+                .Select(c => new LocationDto { Id = c.Id, Name = c.Name });
+            return Ok(cities);
         }
     }
 } 
