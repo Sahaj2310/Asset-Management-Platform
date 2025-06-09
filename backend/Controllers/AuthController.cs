@@ -35,12 +35,13 @@ namespace AssetWeb.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
-            var (success, message, token, user) = await _authService.RegisterAsync(request);
+            var (success, message, accessToken, refreshToken, user) = await _authService.RegisterAsync(request);
             var response = new AuthResponse
             {
                 Success = success,
                 Message = message,
-                Token = token ?? string.Empty,
+                AccessToken = accessToken ?? string.Empty,
+                RefreshToken = refreshToken ?? string.Empty,
                 HasCompany = false
             };
 
@@ -55,30 +56,65 @@ namespace AssetWeb.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            var (success, message, token, user) = await _authService.LoginAsync(request);
+            var (success, message, accessToken, refreshToken, user) = await _authService.LoginAsync(request);
             if (!success)
             {
                 return BadRequest(new AuthResponse
                 {
                     Success = false,
                     Message = message,
-                    Token = string.Empty,
+                    AccessToken = string.Empty,
+                    RefreshToken = string.Empty,
                     HasCompany = false
                 });
             }
 
-            // Check if user has a company
             var hasCompany = await _companyService.UserHasCompanyAsync(user!.Id);
 
             var response = new AuthResponse
             {
                 Success = true,
                 Message = message,
-                Token = token ?? string.Empty,
+                AccessToken = accessToken ?? string.Empty,
+                RefreshToken = refreshToken ?? string.Empty,
                 HasCompany = hasCompany
             };
 
             return Ok(response);
+        }
+
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
+        {
+            var (success, message, accessToken, refreshToken) = await _authService.RefreshTokenAsync(request.RefreshToken);
+            if (!success)
+            {
+                return BadRequest(new AuthResponse
+                {
+                    Success = false,
+                    Message = message,
+                    AccessToken = string.Empty,
+                    RefreshToken = string.Empty,
+                    HasCompany = false
+                });
+            }
+
+            return Ok(new AuthResponse
+            {
+                Success = true,
+                Message = message,
+                AccessToken = accessToken ?? string.Empty,
+                RefreshToken = refreshToken ?? string.Empty,
+                HasCompany = false
+            });
+        }
+
+        [Authorize]
+        [HttpPost("revoke-token")]
+        public async Task<IActionResult> RevokeToken([FromBody] RefreshTokenRequest request)
+        {
+            await _authService.RevokeRefreshTokenAsync(request.RefreshToken);
+            return Ok(new { Message = "Token revoked successfully" });
         }
 
         [HttpGet("confirm-email")]
@@ -89,7 +125,8 @@ namespace AssetWeb.Controllers
             {
                 Success = success,
                 Message = message,
-                Token = string.Empty,
+                AccessToken = string.Empty,
+                RefreshToken = string.Empty,
                 HasCompany = false
             };
 

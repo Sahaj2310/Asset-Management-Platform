@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
 namespace AssetWeb.Models
 {
@@ -50,6 +51,8 @@ namespace AssetWeb.Models
 
         [ForeignKey("UserId")]
         public User? User { get; set; }
+
+        public ICollection<Site> Sites { get; set; } = new List<Site>();
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }

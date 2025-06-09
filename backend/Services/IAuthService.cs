@@ -6,8 +6,10 @@ namespace AssetWeb.Services
 {
     public interface IAuthService
     {
-        Task<(bool Success, string Message, string? Token, User? User)> RegisterAsync(RegisterRequest request);
-        Task<(bool Success, string Message, string? Token, User? User)> LoginAsync(LoginRequest request);
+        Task<(bool Success, string Message, string? AccessToken, string? RefreshToken, User? User)> RegisterAsync(RegisterRequest request);
+        Task<(bool Success, string Message, string? AccessToken, string? RefreshToken, User? User)> LoginAsync(LoginRequest request);
+        Task<(bool Success, string Message, string? AccessToken, string? RefreshToken)> RefreshTokenAsync(string refreshToken);
+        Task<bool> RevokeRefreshTokenAsync(string refreshToken);
         Task<User?> GetUserByIdAsync(Guid userId);
         Guid? GetCurrentUserId();
         Task<(bool Success, string Message)> ConfirmEmailAsync(Guid userId, string token);

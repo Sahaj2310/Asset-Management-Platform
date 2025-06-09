@@ -31,14 +31,14 @@ namespace AssetWeb.Services
             _emailService = emailService;
         }
 
-        public async Task<(bool Success, string Message, string? Token, User? User)> RegisterAsync(RegisterRequest request)
+        public async Task<(bool Success, string Message, string? AccessToken, string? RefreshToken, User? User)> RegisterAsync(RegisterRequest request)
         {
             _logger.LogInformation("Attempting to register user with email: {Email}", request.Email);
 
             if (await _authRepository.UserExists(request.Email))
             {
                 _logger.LogWarning("Registration failed: Email already exists: {Email}", request.Email);
-                return (false, "Email already exists", null, null);
+                return (false, "Email already exists", null, null, null);
             }
 
             var user = await _authRepository.Register(request);
@@ -49,23 +49,39 @@ namespace AssetWeb.Services
             if (!emailSent)
             {
                 _logger.LogWarning("Failed to send confirmation email to: {Email}", request.Email);
-                return (false, "Registration successful but failed to send confirmation email. Please contact support.", null, null);
+                return (false, "Registration successful but failed to send confirmation email. Please contact support.", null, null, null);
             }
 
             _logger.LogInformation("User registered successfully and confirmation email sent: {Email}", request.Email);
-            return (true, "Registration successful. Please check your email to confirm your account.", null, user);
+            return (true, "Registration successful. Please check your email to confirm your account.", null, null, user);
         }
 
-        public async Task<(bool Success, string Message, string? Token, User? User)> LoginAsync(LoginRequest request)
+        public async Task<(bool Success, string Message, string? AccessToken, string? RefreshToken, User? User)> LoginAsync(LoginRequest request)
         {
             var user = await _authRepository.Login(request.Email, request.Password);
             if (user == null)
             {
-                return (false, "Invalid email or password", null, null);
+                return (false, "Invalid email or password", null, null, null);
             }
 
-            var token = _jwtService.GenerateToken(user);
-            return (true, "Login successful", token, user);
+            var (accessToken, refreshToken) = await _jwtService.GenerateTokensAsync(user);
+            return (true, "Login successful", accessToken, refreshToken, user);
+        }
+
+        public async Task<(bool Success, string Message, string? AccessToken, string? RefreshToken)> RefreshTokenAsync(string refreshToken)
+        {
+            var (success, newAccessToken, newRefreshToken) = await _jwtService.RefreshTokenAsync(refreshToken);
+            if (!success)
+            {
+                return (false, "Invalid or expired refresh token", null, null);
+            }
+            return (true, "Token refreshed successfully", newAccessToken, newRefreshToken);
+        }
+
+        public async Task<bool> RevokeRefreshTokenAsync(string refreshToken)
+        {
+            await _jwtService.RevokeRefreshTokenAsync(refreshToken);
+            return true;
         }
 
         public async Task<User?> GetUserByIdAsync(Guid userId)

@@ -39,7 +39,6 @@ namespace AssetWeb.Controllers
             _configuration = configuration;
             _uploadDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "company-logos");
             
-            // Create the upload directory if it doesn't exist
             if (!Directory.Exists(_uploadDirectory))
             {
                 Directory.CreateDirectory(_uploadDirectory);
@@ -76,28 +75,23 @@ namespace AssetWeb.Controllers
         {
             try
             {
-                // Handle logo upload if present
                 if (Request.Form.Files.Count > 0)
                 {
                     var logoFile = Request.Form.Files[0];
                     if (logoFile != null && logoFile.Length > 0)
                     {
-                        // Generate unique filename
                         var fileName = $"{Guid.NewGuid()}{Path.GetExtension(logoFile.FileName)}";
                         var filePath = Path.Combine(_uploadDirectory, fileName);
 
-                        // Save the file
                         using (var stream = new FileStream(filePath, FileMode.Create))
                         {
                             await logoFile.CopyToAsync(stream);
                         }
 
-                        // Set the logo path in the request
                         request.LogoPath = $"/uploads/company-logos/{fileName}";
                     }
                 }
 
-                // Get the current user's ID from the token
                 var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
                 if (string.IsNullOrEmpty(userId) || !Guid.TryParse(userId, out Guid userGuid))
                 {
@@ -118,28 +112,23 @@ namespace AssetWeb.Controllers
         {
             try
             {
-                // Handle logo upload if present
                 if (Request.Form.Files.Count > 0)
                 {
                     var logoFile = Request.Form.Files[0];
                     if (logoFile != null && logoFile.Length > 0)
                     {
-                        // Generate unique filename
                         var fileName = $"{Guid.NewGuid()}{Path.GetExtension(logoFile.FileName)}";
                         var filePath = Path.Combine(_uploadDirectory, fileName);
 
-                        // Save the file
                         using (var stream = new FileStream(filePath, FileMode.Create))
                         {
                             await logoFile.CopyToAsync(stream);
                         }
 
-                        // Set the logo path in the request
                         request.LogoPath = $"/uploads/company-logos/{fileName}";
                     }
                 }
 
-                // Get the current user's ID from the token
                 var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
                 if (string.IsNullOrEmpty(userId) || !Guid.TryParse(userId, out Guid userGuid))
                 {

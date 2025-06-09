@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using AssetWeb.Services;
 
 namespace AssetWeb.Controllers
 {
@@ -30,7 +31,7 @@ namespace AssetWeb.Controllers
             {
                 Id = site.Id,
                 CompanyId = site.CompanyId,
-                CompanyName = site.Company != null ? site.Company.Name : string.Empty,
+                CompanyName = site.Company != null ? site.Company.CompanyName : string.Empty,
                 Name = site.Name,
                 Description = site.Description,
                 Address = site.Address,
@@ -51,7 +52,7 @@ namespace AssetWeb.Controllers
             {
                 Id = site.Id,
                 CompanyId = site.CompanyId,
-                CompanyName = site.Company != null ? site.Company.Name : string.Empty,
+                CompanyName = site.Company != null ? site.Company.CompanyName : string.Empty,
                 Name = site.Name,
                 Description = site.Description,
                 Address = site.Address,
@@ -84,7 +85,7 @@ namespace AssetWeb.Controllers
             {
                 Id = site.Id,
                 CompanyId = site.CompanyId,
-                CompanyName = site.Company != null ? site.Company.Name : string.Empty,
+                CompanyName = site.Company != null ? site.Company.CompanyName : string.Empty,
                 Name = site.Name,
                 Description = site.Description,
                 Address = site.Address,
