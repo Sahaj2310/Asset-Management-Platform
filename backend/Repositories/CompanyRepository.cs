@@ -28,6 +28,11 @@ namespace AssetWeb.Repositories
                 .AnyAsync(c => c.UserId == userId);
         }
 
+        public async Task<Company?> GetCompanyByIdAsync(Guid id)
+        {
+            return await _context.Companies.FirstOrDefaultAsync(c => c.Id == id);
+        }
+
         public async Task<Company> CreateCompanyAsync(Company company)
         {
             await _context.Companies.AddAsync(company);

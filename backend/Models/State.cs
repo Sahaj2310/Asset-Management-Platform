@@ -7,7 +7,7 @@ namespace AssetWeb.Models
         [JsonPropertyName("id")]
         public int Id { get; set; }
         [JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         [JsonPropertyName("country_id")]
         public int CountryId { get; set; }
     }

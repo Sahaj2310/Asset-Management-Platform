@@ -15,5 +15,6 @@ namespace AssetWeb.Services
         Task<(bool Success, string Message)> ConfirmEmailAsync(Guid userId, string token);
         Task<bool> UserExists(string email);
         Task<bool> UpdateUserAsync(User user);
+        Task<User?> GetUserByEmailAsync(string email);
     }
 } 

@@ -8,6 +8,7 @@ namespace AssetWeb.Repositories
     {
         Task<Company?> GetCompanyByUserIdAsync(Guid userId);
         Task<bool> HasCompanyAsync(Guid userId);
+        Task<Company?> GetCompanyByIdAsync(Guid id);
         Task<Company> CreateCompanyAsync(Company company);
         Task<Company?> UpdateCompanyAsync(Company company);
     }

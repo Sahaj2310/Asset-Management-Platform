@@ -1,16 +1,15 @@
 using AssetWeb.Services;
 using Microsoft.AspNetCore.Mvc;
-using AssetWeb.DTOs;
 
 namespace AssetWeb.Controllers
 {
     [ApiController]
     [Route("api/locations")]
-    public class LocationsController : ControllerBase
+    public class GeographicalLocationsController : ControllerBase
     {
         private readonly LocationDataService _locationService;
 
-        public LocationsController(LocationDataService locationService)
+        public GeographicalLocationsController(LocationDataService locationService)
         {
             _locationService = locationService;
         }
@@ -19,7 +18,7 @@ namespace AssetWeb.Controllers
         public IActionResult GetCountries()
         {
             var countries = _locationService.GetCountries()
-                .Select(c => new LocationDto { Id = c.Id, Name = c.Name });
+                .Select(c => new { c.Id, c.Name });
             return Ok(countries);
         }
 
@@ -27,7 +26,7 @@ namespace AssetWeb.Controllers
         public IActionResult GetStates(int countryId)
         {
             var states = _locationService.GetStatesByCountry(countryId)
-                .Select(s => new LocationDto { Id = s.Id, Name = s.Name });
+                .Select(s => new { s.Id, s.Name });
             return Ok(states);
         }
 
@@ -35,7 +34,7 @@ namespace AssetWeb.Controllers
         public IActionResult GetCities(int stateId)
         {
             var cities = _locationService.GetCitiesByState(stateId)
-                .Select(c => new LocationDto { Id = c.Id, Name = c.Name });
+                .Select(c => new { c.Id, c.Name });
             return Ok(cities);
         }
     }

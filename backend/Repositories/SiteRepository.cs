@@ -19,7 +19,7 @@ namespace AssetWeb.Repositories
             return await _context.Sites.Include(s => s.Company).ToListAsync();
         }
 
-        public async Task<Site> GetByIdAsync(Guid id)
+        public async Task<Site?> GetSiteByIdAsync(Guid id)
         {
             return await _context.Sites.Include(s => s.Company).FirstOrDefaultAsync(s => s.Id == id);
         }

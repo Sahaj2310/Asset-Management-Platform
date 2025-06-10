@@ -113,5 +113,10 @@ namespace AssetWeb.Services
         {
             return await _authRepository.UpdateUserAsync(user);
         }
+
+        public async Task<User?> GetUserByEmailAsync(string email)
+        {
+            return await _authRepository.GetUserByEmailAsync(email);
+        }
     }
 } 

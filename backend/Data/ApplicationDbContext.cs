@@ -13,6 +13,7 @@ namespace AssetWeb.Data
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<Company> Companies { get; set; } = null!;
         public DbSet<Site> Sites { get; set; } = null!;
+        public DbSet<Location> Locations { get; set; } = null!;
         public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -33,6 +34,18 @@ namespace AssetWeb.Data
                 .WithMany(c => c.Sites)
                 .HasForeignKey(s => s.CompanyId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Location>()
+                .HasOne(l => l.Site)
+                .WithMany()
+                .HasForeignKey(l => l.SiteId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Location>()
+                .HasOne(l => l.Company)
+                .WithMany()
+                .HasForeignKey(l => l.CompanyId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

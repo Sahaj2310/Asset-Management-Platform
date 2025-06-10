@@ -7,7 +7,7 @@ namespace AssetWeb.Repositories
     public interface ISiteRepository
     {
         Task<IEnumerable<Site>> GetAllAsync();
-        Task<Site> GetByIdAsync(Guid id);
+        Task<Site?> GetSiteByIdAsync(Guid id);
         Task<Site> AddAsync(Site site);
         Task UpdateAsync(Site site);
         Task DeleteAsync(Site site);

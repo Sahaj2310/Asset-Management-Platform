@@ -46,7 +46,7 @@ namespace AssetWeb.Controllers
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<SiteReadDto>> GetSite(Guid id)
         {
-            var site = await _siteRepository.GetByIdAsync(id);
+            var site = await _siteRepository.GetSiteByIdAsync(id);
             if (site == null) return NotFound();
             var dto = new SiteReadDto
             {
@@ -102,7 +102,7 @@ namespace AssetWeb.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            var site = await _siteRepository.GetByIdAsync(id);
+            var site = await _siteRepository.GetSiteByIdAsync(id);
             if (site == null) return NotFound();
             site.CompanyId = dto.CompanyId;
             site.Name = dto.Name;
@@ -119,7 +119,7 @@ namespace AssetWeb.Controllers
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> DeleteSite(Guid id)
         {
-            var site = await _siteRepository.GetByIdAsync(id);
+            var site = await _siteRepository.GetSiteByIdAsync(id);
             if (site == null) return NotFound();
             await _siteRepository.DeleteAsync(site);
             return NoContent();

@@ -1,5 +1,7 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
 namespace AssetWeb.Models
 {
@@ -12,17 +14,17 @@ namespace AssetWeb.Models
         public Guid CompanyId { get; set; } 
 
         [ForeignKey("CompanyId")]
-        public Company Company { get; set; } 
+        public Company? Company { get; set; } 
 
         [Required]
         [MaxLength(100)]
-        public string Name { get; set; } 
+        public string Name { get; set; } = string.Empty;
 
         [MaxLength(500)]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
-        [MaxLength(200)]
-        public string Address { get; set; }
+        [MaxLength(255)]
+        public string Address { get; set; } = string.Empty;
 
         [Required]
         public int CountryId { get; set; }
@@ -31,7 +33,10 @@ namespace AssetWeb.Models
         [Required]
         public int CityId { get; set; }
 
+        [Required]
         [MaxLength(20)]
-        public string ZipCode { get; set; }
+        public string ZipCode { get; set; } = string.Empty;
+
+        public ICollection<Location> Locations { get; set; } = new List<Location>();
     }
 } 
