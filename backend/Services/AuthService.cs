@@ -16,19 +16,22 @@ namespace AssetWeb.Services
         private readonly ILogger<AuthService> _logger;
         private readonly JwtService _jwtService;
         private readonly IEmailService _emailService;
+        private readonly ICompanyService _companyService;
 
         public AuthService(
             IAuthRepository authRepository,
             IHttpContextAccessor httpContextAccessor,
             ILogger<AuthService> logger,
             JwtService jwtService,
-            IEmailService emailService)
+            IEmailService emailService,
+            ICompanyService companyService)
         {
             _authRepository = authRepository;
             _httpContextAccessor = httpContextAccessor;
             _logger = logger;
             _jwtService = jwtService;
             _emailService = emailService;
+            _companyService = companyService;
         }
 
         public async Task<(bool Success, string Message, string? AccessToken, string? RefreshToken, User? User)> RegisterAsync(RegisterRequest request)
@@ -117,6 +120,15 @@ namespace AssetWeb.Services
         public async Task<User?> GetUserByEmailAsync(string email)
         {
             return await _authRepository.GetUserByEmailAsync(email);
+        }
+
+        public Guid? GetCurrentUserCompanyId()
+        {
+            var userId = GetCurrentUserId();
+            if (userId == null) return null;
+
+            var company = _companyService.GetCompanyByUserIdAsync(userId.Value).GetAwaiter().GetResult();
+            return company?.Id;
         }
     }
 } 

@@ -48,4 +48,8 @@ export const authService = {
     });
     return response.data;
   },
+
+  googleLogin: () => {
+    window.location.href = `${API_URL}/auth/google-login`;
+  },
 }; 

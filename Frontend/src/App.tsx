@@ -6,6 +6,7 @@ import theme from './theme/theme';
 import { AuthProvider, useAuth } from './hooks/useAuth';
 import MainLayout from './components/layout/MainLayout';
 import Login from './pages/auth/Login';
+import LocationForm from './pages/locations/LocationForm';
 
 // Protected Route component
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -73,6 +74,16 @@ const App: React.FC = () => {
                 <ProtectedRoute>
                   <MainLayout>
                     <div>Settings Content</div>
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/locations"
+              element={
+                <ProtectedRoute>
+                  <MainLayout>
+                    <LocationForm />
                   </MainLayout>
                 </ProtectedRoute>
               }

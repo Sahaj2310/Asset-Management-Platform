@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using AssetWeb.DTOs;
 using AssetWeb.Models;
@@ -16,5 +17,6 @@ namespace AssetWeb.Services
         Task<bool> UserExists(string email);
         Task<bool> UpdateUserAsync(User user);
         Task<User?> GetUserByEmailAsync(string email);
+        Guid? GetCurrentUserCompanyId();
     }
 } 
